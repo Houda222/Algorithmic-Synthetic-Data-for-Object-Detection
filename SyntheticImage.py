@@ -48,7 +48,7 @@ class SyntheticImage:
 
     def resize_transform_obj(self, new_h, new_w, transforms):
         # random_ex = random.randint(1, 20)
-        transform_resize =   transform_resize = A.LongestMaxSize(max_size=int(new_h*1.5), interpolation=1, always_apply=True)
+        transform_resize =   transform_resize = A.LongestMaxSize(max_size=int(new_h*3), interpolation=1, always_apply=True)
         transformed_resized = transform_resize(image=self.sign, mask=self.mask)
         img_t = transformed_resized["image"]
         mask_t = transformed_resized["mask"]

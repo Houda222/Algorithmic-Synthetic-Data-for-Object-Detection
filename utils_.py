@@ -111,8 +111,8 @@ def delete_images_and_labels(img_source_dir, label_source_dir, classes):
 
             if check_class(label_path, classes):
                 cpt += 1
-                print(image_path)
-                print(label_path)
+                # print(image_path)
+                # print(label_path)
                 os.remove(image_path)
                 os.remove(label_path)
 
@@ -126,5 +126,3 @@ def check_class(label_path, classes):
                 return True
             
 
-
-delete_images_and_labels("/home/hghallab/dataset/synthetic_data/outputs300/images", "/home/hghallab/dataset/synthetic_data/outputs300/labels", ["60"])

@@ -17,20 +17,42 @@ class SyntheticImage:
 
         Parameters:
         -----------
-        background : str
+        background_path : str
             Path for the image on which we want to put the sign
         
-        sign : str
+        sign_path : str
             Path for the railway sign that we want to put on the background
 
 
         Attributes:
         -----------
+        image: numpy array
+            Result of merging the sign and the background
+        
+        mask: numpy array
+            Mask of the sign 
+        
+        background_path: str
+
+        background: numpy array
+            background on which we want to paste the sign
+
+        sign_path: str
+
+        sign: numpy array
+
+        label: str
+            Class of the sign retrieved from its original folder
+
+        sign_coordinates: list
+            annotation in yolo format of the image
+
         """
+
         self.image = None
         self.mask = None
         self.background_path = background_path
-        self.background= cv2.imread(self.background_path)
+        self.background = cv2.imread(self.background_path)
         self.sign_path = sign_path
         self.sign = cv2.imread(self.sign_path, cv2.IMREAD_UNCHANGED)
         self.label = None
@@ -38,6 +60,9 @@ class SyntheticImage:
 
 
     def get_img_and_mask(self):
+        """
+        Reads the sign image in rgba format and make a corresponding mask for the sign
+        """
         # Extract RGB and alpha, convert to float, normalize alpha, 
         # apply alpha to RGB
         mask = self.sign[:, :, 3]
@@ -46,7 +71,12 @@ class SyntheticImage:
         self.sign = cv2.bitwise_and(self.sign[:, :, :3], self.sign[:, :, :3], self.mask)
         
 
-    def resize_transform_obj(self, new_h, new_w, transforms):
+    def resize_transform_obj(self, new_h, transforms):
+        """
+        Resizes the image while keeping the original height/width ratio 
+        and transforms using Albumentation library transforms
+        Changes are applied to both the mask and the image
+        """
         # random_ex = random.randint(1, 20)
         transform_resize =   transform_resize = A.LongestMaxSize(max_size=int(new_h*3), interpolation=1, always_apply=True)
         transformed_resized = transform_resize(image=self.sign, mask=self.mask)
@@ -61,6 +91,9 @@ class SyntheticImage:
         self.mask = mask_t
 
     def transform_background(self, bbox_coor):
+        """
+        Tries to erase the old sign in the background image using cv2's inpaint
+        """
         mask = np.zeros(self.background.shape[:2], np.uint8)
         xmin, ymin, xmax, ymax = bbox_coor
         mask[int(ymin):int(ymax), int(xmin):int(xmax)] = 255 
@@ -121,6 +154,9 @@ class SyntheticImage:
         return img_comp, mask_comp, mask_added
 
     def retrieve_yolo_coordinates(self, labels_dir, labels):
+        """
+        Get yolo coordinates of the old sign in the background image
+        """
         image_name, _ = os.path.splitext(os.path.basename(self.background_path))
         image_name = image_name.replace(" ", "-")
         image_name = image_name.replace("’", "-")

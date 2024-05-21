@@ -3,26 +3,52 @@ import os
 from SyntheticImage import SyntheticImage
 import time
 
+
+######################## The algorithm
+# The idea is to take a background image, which is an already annotated image with only sign, 
+# and put the new sign in the same position of the old sign 
+# based on its label file. 
+# Some transformations are applied to the sign image to make them more realist
+# and generate different instances
+# Some other transformation are applied to the background images to try to remove the old sign. 
+# And finally some transformations are applied to the final image to simulate speed (elastic tranform)
+# to simulate different weather conditions etc.
+########################
+
+
+######################## Folders and Files
+# Sign images are put in folders based on their class
+# for example: /synthetic_data/signs/signs that need 200 samples/squares/12
+# 12 here signifies the class 12
+# One could directly retrieve the label from the label file
+########################
+
+
+# Define the number of generated outputs
 NB_SAMPLES = 300
+
 # Set the paths 
-LABEL_PATH = "/home/hghallab/dataset/object_detection_data/real_raw/train/labels"
+LABEL_PATH = "/home/hghallab/dataset/object_detection_data/RealestRealRaw/train/labels"
 BACKGROUNDS_PATH = "/home/hghallab/dataset/synthetic_data/backgrounds"
-SIGNS_PATH = "/home/hghallab/dataset/synthetic_data/signs/signs that need 300 samples/squares"
+SIGNS_PATH = "/home/hghallab/dataset/synthetic_data/signs/signs that need 200 samples/Hlong"
 OUTPUT_PATH = "/home/hghallab/dataset/synthetic_data/outputs300"
 
 BACKGROUDS = os.listdir(BACKGROUNDS_PATH)
 SIGNS = os.listdir(SIGNS_PATH)
 LABELS = os.listdir(LABEL_PATH)
 
-
+# Set a time counter
 tic = time.time()
 
+# Generation loop
 for folder in SIGNS:
     print("creating data from folder ", folder, "...")
+
     signs_path = os.path.join(SIGNS_PATH, folder)
     sign = os.listdir(signs_path)
     
     for i in range(NB_SAMPLES):
+        # Get a random index for the sign and background
         sign_path, background_path = get_random_sign_and_bg(sign, BACKGROUDS, signs_path, BACKGROUNDS_PATH)
         
         # Define the transform to apply to the final compostion
@@ -49,16 +75,29 @@ for folder in SIGNS:
             A.GaussianBlur(blur_limit=(3, 5), p=1),
         ])
         
+        # Initilize the class with given parameters
         synthetic_image = SyntheticImage(background_path, sign_path)
+
+        # Generate the mask
         synthetic_image.get_img_and_mask()
+
+        # Get yolo coordinates from label files
         yolo_coordinates = synthetic_image.retrieve_yolo_coordinates(LABEL_PATH, LABELS)
+        
+        # Transform coordinates to be able to position the new sign on the background
         x_center, y_center, width, height = synthetic_image.yolo_to_bbox(yolo_coordinates)
         
+        # Get bounding boxes of the old sign to remove it from the background
         bbox = synthetic_image.yolo_to_bbox_(yolo_coordinates)
         synthetic_image.transform_background(bbox)
 
+        # Resize and apply tranforms to the sign image
         synthetic_image.resize_transform_obj(int(height), int(width), transforms=transforms_obj)
+        
+        # Merge everything and get results
         synthetic_image.create_composition(int(x_center), int(y_center), transform_comp)
+        
+        # Save the output image and its new labels file in the specified direction
         synthetic_image.save_composition_and_annotation(OUTPUT_PATH, folder)
 
 tac = time.time()

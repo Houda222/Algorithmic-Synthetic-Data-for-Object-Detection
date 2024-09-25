@@ -34,7 +34,7 @@ And finally some transformations are applied to the final image to simulate diff
 </div>
 
 ## How to run:
-TO use the code, run the main.py file.
+To use the code, run the main.py file.
 
 Modify the tranformations used in main.py depending on your specific need, and modify the size of the pasted sign in the SyntheticImage.py file.
 

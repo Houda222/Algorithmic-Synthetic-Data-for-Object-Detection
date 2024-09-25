@@ -34,4 +34,11 @@ And finally some transformations are applied to the final image to simulate diff
 </div>
 
 ## How to run:
+TO use the code, run the main.py file.
 
+Modify the tranformations used in main.py depending on your specific need, and modify the size of the pasted sign in the SyntheticImage.py file.
+
+**What do you need:**
+- Each emplates of one class (one sign in this case) should be put in seperate folders named on the class' label. For example all templates (can be more than one, for instance one PNG drawn image and another cropped one) of class 12 should be put in a folder named 12. The algorithm then picks a random one for image. This allows the code to automatically generate the label file by directly retrieving the class number and putting it in a txt file.
+- A folder for backgrouds with one sign.
+- A folder for label files of chosen backgrounds. This is used to know where to put the new sign. 

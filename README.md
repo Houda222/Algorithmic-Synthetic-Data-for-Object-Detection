@@ -13,8 +13,8 @@ Some transformations are applied to the sign image to make them more realistic a
 Some other transformation are applied to the background images to try to remove the old sign. 
 And finally some transformations are applied to the final image to simulate different weather conditions and the deformations due to the train speed.
 
-Examples of signs templates:
-Those are PNG vector images but one can use real life sign images cropped from their context, provided that the sign is clear enough.
+**Examples of signs templates:** 
+(Those are PNG vector images but one can use real life sign images cropped from their context, provided that the sign is clear enough.)
 
 <div align="center">
   <img src="images/BP DIS.png" width=100>
@@ -22,4 +22,12 @@ Those are PNG vector images but one can use real life sign images cropped from t
   <img src="images/ARRET A.png" width=100>
   <img src="images/Z.png" width=100>
   <img src="images/TIV D MOB.png" width=100>
+</div>
+
+**Examples of outputs:**
+<div align="center">
+  <img src="images/1.png" width=700>
+  <img src="images/2.png" width=700>
+  <img src="images/3.png" width=700>
+  <img src="images/4.png" width=700>
 </div>

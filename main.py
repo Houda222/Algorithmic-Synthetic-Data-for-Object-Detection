@@ -58,8 +58,10 @@ for folder in SIGNS:
                                 always_apply=True,
                                 p=1),
             A.GaussNoise(var_limit=(10, 50), mean=0),
-            A.ElasticTransform(alpha=10, sigma=30, alpha_affine=30, p=0.7),
-            A.RandomFog(fog_coef_lower=0.01, fog_coef_upper=0.1, p=1),
+            A.GaussianBlur(blur_limit=(3, 5), p=1),
+            A.Perspective(scale=(0.05, 0.1), keep_size=True, p=0.7), 
+            A.RandomRain(brightness_coefficient=0.9, drop_width=1, blur_value=3, p=0.5), 
+            A.RandomShadow(shadow_roi=(0, 0.5, 1, 1), shadow_dimension=5, p=0.3), 
             A.RandomBrightnessContrast(brightness_limit=(-0.2, 0.2), contrast_limit=(-0.2, 0.2), p=0.5)                                                
         ])
         
@@ -73,6 +75,7 @@ for folder in SIGNS:
                                        p=1),
             A.RGBShift(r_shift_limit=(-50, 0), g_shift_limit=(-50, 0), b_shift_limit=(-50, 0), p=1),
             A.GaussianBlur(blur_limit=(3, 5), p=1),
+            A.Rotate(limit=(-10, 10), p=0.5)
         ])
         
         # Initilize the class with given parameters

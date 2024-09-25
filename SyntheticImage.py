@@ -78,7 +78,8 @@ class SyntheticImage:
         Changes are applied to both the mask and the image
         """
         # random_ex = random.randint(1, 20)
-        transform_resize =   transform_resize = A.LongestMaxSize(max_size=int(new_h*3), interpolation=1, always_apply=True)
+        #### TO MODIFY the size max_size=int(new_h*1.5) depending on your use case
+        transform_resize =   transform_resize = A.LongestMaxSize(max_size=int(new_h*1.5), interpolation=1, always_apply=True)
         transformed_resized = transform_resize(image=self.sign, mask=self.mask)
         img_t = transformed_resized["image"]
         mask_t = transformed_resized["mask"]

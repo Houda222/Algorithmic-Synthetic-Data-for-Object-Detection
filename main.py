@@ -2,7 +2,7 @@ from utils_ import *
 import os
 from SyntheticImage import SyntheticImage
 import time
-
+import albumentations as A
 
 ######################## The algorithm
 # The idea is to take a background image, which is an already annotated image with only one sign, 
@@ -30,8 +30,8 @@ NB_SAMPLES = 300
 # Set the paths 
 LABEL_PATH = "/home/hghallab/dataset/object_detection_data/RealestRealRaw/train/labels"
 BACKGROUNDS_PATH = "/home/hghallab/dataset/synthetic_data/backgrounds"
-SIGNS_PATH = "/home/hghallab/dataset/synthetic_data/signs/signs that need 200 samples/Hlong"
-OUTPUT_PATH = "/home/hghallab/dataset/synthetic_data/outputs300"
+SIGNS_PATH = "/home/hghallab/dataset/synthetic_data/signs/signs that need 200 samples"
+OUTPUT_PATH = "/home/hghallab/dataset/synthetic_data/outputs200"
 
 BACKGROUDS = os.listdir(BACKGROUNDS_PATH)
 SIGNS = os.listdir(SIGNS_PATH)

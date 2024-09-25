@@ -10,9 +10,6 @@ Many of the railway signs templates used (including in this readme) are taken fr
 The algorithm relies on python's albumnetations and OpenCv.
 
 The idea is to take a background image, which is an already annotated image with only one sign, and put the new sign in the same position of the old sign based on its label file. 
-Some transformations are applied to the sign image to make them more realistic and generate different instances.
-Some other transformation are applied to the background images to try to remove the old sign. 
-And finally some transformations are applied to the final image to simulate different weather conditions and the deformations due to the train speed.
 
 **Examples of signs templates:** 
 (Those are PNG vector images but one can use real life sign images cropped from their context, provided that the sign is clear enough.)
@@ -48,17 +45,17 @@ other, especially classes that had little to no instances in real life images, w
 SVG images
 - Organise instances of each file in a separate folder named after the class label to allow automatic annotation
 
-  ## Algorithm:
-• Loop over folders to generate images for each sign one at time
-• Select a random sample of the sign and a random background
-• Generate a mask for the sign
-• Retrieve, from the annotation file, the coordinates of the sign that is already in the selected background
+## Algorithm:
+- Loop over folders to generate images for each sign one at time
+- Select a random sample of the sign and a random background
+- Generate a mask for the sign
+- Retrieve, from the annotation file, the coordinates of the sign that is already in the selected background
 and remove it using opencv’s inpaint function
-• Apply different transformations to the sign object: Brightness contrast, RGBShift, rotation and Gaussian
+- Apply different transformations to the sign object: Brightness contrast, RGBShift, rotation and Gaussian
 Blur.
-• Create the synthetic image by pasting the new sign where the previous sign was
-• Apply some transformations to the final composition: Histogram Matching between the background and
+- Create the synthetic image by pasting the new sign where the previous sign was
+- Apply some transformations to the final composition: Histogram Matching between the background and
 the result to make the latter’s colors more natural looking, Gaussian Noise, Gaussian Blur, Perspective
 Scale, Random Rain, Random shadow and Brightness contrast
-• Create the label file of the composition based on the folder’s name, which is the class name, and the position
+- Create the label file of the composition based on the folder’s name, which is the class name, and the position
 of the sign’s mask

@@ -5,10 +5,10 @@ import time
 
 
 ######################## The algorithm
-# The idea is to take a background image, which is an already annotated image with only sign, 
+# The idea is to take a background image, which is an already annotated image with only one sign, 
 # and put the new sign in the same position of the old sign 
 # based on its label file. 
-# Some transformations are applied to the sign image to make them more realist
+# Some transformations are applied to the sign image to make them more realistic
 # and generate different instances
 # Some other transformation are applied to the background images to try to remove the old sign. 
 # And finally some transformations are applied to the final image to simulate speed (elastic tranform)
